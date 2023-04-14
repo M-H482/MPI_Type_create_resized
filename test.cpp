@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     MPI_Datatype block_t, new_type;
     MPI_Aint exetent;
 
-    MPI_Type_vector(2, 3, n, MPI_INT, &block_t);
+    MPI_Type_vector(count, blocklength, n, MPI_INT, &block_t);
     MPI_Type_commit(&block_t);
 
     MPI_Type_extent(block_t, &exetent);
@@ -53,7 +53,7 @@ int main(int argc, char** argv)
         cout << "before MPI_Type_create_resized, exetent of block_t is " << exetent << endl;
     }
 
-    MPI_Type_create_resized(block_t, 0, (2 * n + 3) * sizeof(int), &new_type);
+    MPI_Type_create_resized(block_t, 0, (count * stride + blocklength) * sizeof(int), &new_type);
     MPI_Type_commit(&new_type);
 
     MPI_Type_extent(block_t, &exetent);
